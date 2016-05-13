@@ -11,9 +11,15 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+
+import controller.GUIController;
+import view.models.MemberTableModel;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ParliamentGUI extends JFrame {
 
@@ -57,6 +63,17 @@ public class ParliamentGUI extends JFrame {
 	private JButton getBtnGetMembers() {
 		if (btnGetMembers == null) {
 			btnGetMembers = new JButton("GET Members");
+			btnGetMembers.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						GUIController.writeJson();
+						txtStatus.setText("Got members from service.");
+					} catch (Exception e1) {
+						e1.printStackTrace();
+						txtStatus.setText(e1.getMessage());
+					}
+				}
+			});
 			btnGetMembers.setPreferredSize(new Dimension(135, 30));
 		}
 		return btnGetMembers;
@@ -64,6 +81,12 @@ public class ParliamentGUI extends JFrame {
 	private JButton getBtnFillTable() {
 		if (btnFillTable == null) {
 			btnFillTable = new JButton("Fill table");
+			btnFillTable.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					table.setModel(new MemberTableModel(GUIController.getMembers()));
+					txtStatus.setText("Table filled with data.");
+				}
+			});
 			btnFillTable.setPreferredSize(new Dimension(135, 30));
 		}
 		return btnFillTable;
@@ -71,6 +94,12 @@ public class ParliamentGUI extends JFrame {
 	private JButton getBtnUpdate() {
 		if (btnUpdate == null) {
 			btnUpdate = new JButton("Update members");
+			btnUpdate.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					MemberTableModel model = (MemberTableModel) table.getModel();
+					GUIController.saveModified(model.getMembers());
+				}
+			});
 			btnUpdate.setPreferredSize(new Dimension(135, 30));
 		}
 		return btnUpdate;
@@ -85,6 +114,8 @@ public class ParliamentGUI extends JFrame {
 	private JTable getTable_1() {
 		if (table == null) {
 			table = new JTable();
+			table.setFillsViewportHeight(true);
+			
 		}
 		return table;
 	}
@@ -110,5 +141,11 @@ public class ParliamentGUI extends JFrame {
 			txtStatus = new JTextArea();
 		}
 		return txtStatus;
+	}
+	public void parseError(String text) {
+		txtStatus.setText(text);
+	}
+	public void clearStatus() {
+		txtStatus.setText("");
 	}
 }
