@@ -80,7 +80,7 @@ public class GUIController {
 	public static void saveModified(List<Member> members) {
 		parliament = (LinkedList<Member>) members;
 		
-		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")))){
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/updatedMembers.json")))){
 			JsonArray jsonArray = MemberJsonUtility.serializeMembers(parliament);
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 			String membersString = gson.toJson(jsonArray);
