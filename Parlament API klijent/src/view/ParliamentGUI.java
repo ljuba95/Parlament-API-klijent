@@ -40,6 +40,7 @@ public class ParliamentGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public ParliamentGUI() {
+		setTitle("Parliament members");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 737, 384);
 		contentPane = new JPanel();

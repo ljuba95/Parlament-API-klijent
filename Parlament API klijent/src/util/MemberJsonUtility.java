@@ -22,9 +22,8 @@ public class MemberJsonUtility {
 			memberJson.addProperty("id", m.getId());
 			memberJson.addProperty("name", m.getName());
 			memberJson.addProperty("lastName", m.getLastName());
-			if (memberJson.get("birthDate") != null) {
-				m.setBirthDate(format.parse(memberJson.get("birthDate").getAsString()));
-			}
+			if(m.getBirthDate()!=null)
+				memberJson.addProperty("birthDate", format.format(m.getBirthDate()));
 			membersArray.add(memberJson);
 		}
 
